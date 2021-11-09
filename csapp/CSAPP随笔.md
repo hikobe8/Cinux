@@ -92,3 +92,16 @@ void swap(int *x, int *y) {
 2. 算术右移 左边补最高有效位的值(在处理有符号数的时候很有用) 
 
 Java中``` >>> ```逻辑右移，``` >> ``` 算术右移
+
+### 整数表示
+
+**C语言中的整数类型**
+```
+char / unsigned char 
+short / unsigned short
+int / unsigned int 
+long / unsigned long
+int32_t / uint32_t
+int64_t / uint64_t
+```
+**Java中不支持无符号数**
