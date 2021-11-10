@@ -69,7 +69,7 @@ source .bashrc(.zprofile)
 . ./.zprofile
 ```
 
-##文件查找
+## 文件查找
 
 * locate 快而全
   使用 locate 命令查找文件也不会遍历硬盘，它通过查询 /var/lib/mlocate/mlocate.db 数据库来检索信息。不过这个数据库也不是实时更新的，系统会使用定时任务每天自动执行 updatedb 命令来更新数据库。所以有时候你刚添加的文件，它可能会找不到，需要手动执行一次 updatedb 命令（在我们的环境中必须先执行一次该命令）
@@ -99,4 +99,34 @@ sudo locate /etc/*.list
 find /etc/ -name sources.list
 sudo chown shiyanlou /etc/apt/sources.list
 sudo chmod 600 /etc/apt/sources/list
+```
+
+### 文件的打包，压缩
+
+**zip**
+
+使用zip打包压缩文件
+
+```
+# -r 表示递归打包子目录的全部内容
+# -q表示安静模式没有输出信息
+# -1, 设置压缩级别 -[1-9]，1 表示最快压缩但体积大，9 表示体积最小但耗时最久
+# -o 为打包后的文件名，随后为要打包的目录或文件 
+zip -r -q -1 -o <dst.zip> <src>
+```
+
+创建加密zip包
+```
+zip -r -e -o <dst.zip> <src>
+```
+
+使用unzip解压缩
+
+```
+# -d 解压缩到指定文件夹
+unzip -q <dst.zip> -d <dstDir>
+# -l 不解压，只是查看压缩包的内容
+unzip -l <dst.zip>
+# 指定参数类型 -O(英文字母大写的O)
+unzip -O GBK 中文压缩文件.zip
 ```
