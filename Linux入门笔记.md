@@ -130,3 +130,38 @@ unzip -l <dst.zip>
 # 指定参数类型 -O(英文字母大写的O)
 unzip -O GBK 中文压缩文件.zip
 ```
+**tar**
+tar为Linux中比较常用的打包命令，可以结合gzip,xz等压缩工具使用，就可以成为一个便捷的打包压缩工具。
+
+使用tar打包文件
+```
+#打包为归档文件, -c表示创建,create, -f指定打包后的文件名
+tar -c -f <dst.tar> <srcDir>
+#-c -f可以写在一起，但是注意的是一定是-cf，因为f后面会跟着对应的打包后的文件名，一般的写法都是-cf之类的。
+tar -cf <dst.tar> <srcDir>
+```
+
+使用tar打包压缩文件
+
+```
+# -z 使用gzip压缩， -v显示打包过程信息
+tar -czvf <dst.tar> <srcDir>
+```
+
+tar解压缩
+
+```
+#-x 解包, -z使用gzip, -C 指定解压路径，请注意这个路径一定要是已存在的目录
+tar -zxvf <dst.tar> -C <existedDir>
+```
+
+> **zip, tar小tips**
+> * zip：
+打包 ：zip something.zip something （目录请加 -r 参数）
+解包：unzip something.zip
+指定路径：-d 参数
+>* tar：
+打包：tar -cf something.tar something
+解包：tar -xf something.tar
+压缩：-z 使用gzip
+指定路径：-C 参数
