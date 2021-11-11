@@ -165,3 +165,29 @@ tar -zxvf <dst.tar> -C <existedDir>
 解包：tar -xf something.tar
 压缩：-z 使用gzip
 指定路径：-C 参数
+
+### 磁盘管理
+
+**dd**
+
+```
+# dd命令用于转换和复制文件，dd在复制时可以处理数据
+
+# 输出到文件test, if=输入, of=输出, bs(block size)块大小，默认为Byte, count块的个数
+dd if=/dev/stdin of=test bs=10 count=1
+# 输出到终端
+dd if=/dev/stdin of=/std/stdout bs=10 count=1
+# 读取输入并且转换为大写然后输出到test文件
+dd if=/dev/stdin of=test bs=10 count=1 conv=ucase
+```
+#### 使用dd命令创建虚拟镜像文件
+```
+# 从 /dev/zero 设备创建一个容量为 256M 的空文件
+dd of=/dev/stdin of=test bs=10 count=1
+# 使用 mkfs 命令格式化磁盘
+sudo mkfs.ext4 virtual.img
+```
+```
+#小练习，找出目录下最大的十个文件或目录
+du -ah |sort -n -r|head -n 10
+```
