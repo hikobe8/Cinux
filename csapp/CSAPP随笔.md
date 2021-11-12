@@ -92,3 +92,19 @@ void swap(int *x, int *y) {
 2. 算术右移 左边补最高有效位的值(在处理有符号数的时候很有用) 
 
 Java中``` >>> ```逻辑右移，``` >> ``` 算术右移
+
+### 整数的表示
+
+```
+# length = 0 返回值是多少 ?
+int sum(int a[], unsigned length) {
+    int sum = 0;
+    int i;
+    for (i = 0; i <= length - 1; i++)
+    {
+        sum += a[i];
+    }
+    return sum;
+}
+# 无符号数的计算结果就算是负数依然没有符号位，一样为无符号数,补码转换为无符号数。
+```

@@ -191,3 +191,13 @@ sudo mkfs.ext4 virtual.img
 #小练习，找出目录下最大的十个文件或目录
 du -ah |sort -n -r|head -n 10
 ```
+
+## 帮助命令
+
+**type**
+可以使用type命令来区分当前命令是内建还是外部，或者是否是别名
+```
+type cd
+type vim
+type ls
+```
