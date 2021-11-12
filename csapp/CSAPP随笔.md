@@ -93,6 +93,7 @@ void swap(int *x, int *y) {
 
 Java中``` >>> ```逻辑右移，``` >> ``` 算术右移
 
+
 ### 整数表示
 
 **C语言中的整数类型**
@@ -105,3 +106,19 @@ int32_t / uint32_t
 int64_t / uint64_t
 ```
 **Java中不支持无符号数**
+
+
+小练习
+```
+# length = 0 返回值是多少 ?
+int sum(int a[], unsigned length) {
+    int sum = 0;
+    int i;
+    for (i = 0; i <= length - 1; i++)
+    {
+        sum += a[i];
+    }
+    return sum;
+}
+# 无符号数的计算结果就算是负数依然没有符号位，一样为无符号数,补码转换为无符号数。
+```

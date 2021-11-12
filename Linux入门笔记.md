@@ -69,7 +69,7 @@ source .bashrc(.zprofile)
 . ./.zprofile
 ```
 
-##文件查找
+## 文件查找
 
 * locate 快而全
   使用 locate 命令查找文件也不会遍历硬盘，它通过查询 /var/lib/mlocate/mlocate.db 数据库来检索信息。不过这个数据库也不是实时更新的，系统会使用定时任务每天自动执行 updatedb 命令来更新数据库。所以有时候你刚添加的文件，它可能会找不到，需要手动执行一次 updatedb 命令（在我们的环境中必须先执行一次该命令）
@@ -99,4 +99,105 @@ sudo locate /etc/*.list
 find /etc/ -name sources.list
 sudo chown shiyanlou /etc/apt/sources.list
 sudo chmod 600 /etc/apt/sources/list
+```
+
+### 文件的打包，压缩
+
+**zip**
+
+使用zip打包压缩文件
+
+```
+# -r 表示递归打包子目录的全部内容
+# -q表示安静模式没有输出信息
+# -1, 设置压缩级别 -[1-9]，1 表示最快压缩但体积大，9 表示体积最小但耗时最久
+# -o 为打包后的文件名，随后为要打包的目录或文件 
+zip -r -q -1 -o <dst.zip> <src>
+```
+
+创建加密zip包
+```
+zip -r -e -o <dst.zip> <src>
+```
+
+使用unzip解压缩
+
+```
+# -d 解压缩到指定文件夹
+unzip -q <dst.zip> -d <dstDir>
+# -l 不解压，只是查看压缩包的内容
+unzip -l <dst.zip>
+# 指定参数类型 -O(英文字母大写的O)
+unzip -O GBK 中文压缩文件.zip
+```
+**tar**
+tar为Linux中比较常用的打包命令，可以结合gzip,xz等压缩工具使用，就可以成为一个便捷的打包压缩工具。
+
+使用tar打包文件
+```
+#打包为归档文件, -c表示创建,create, -f指定打包后的文件名
+tar -c -f <dst.tar> <srcDir>
+#-c -f可以写在一起，但是注意的是一定是-cf，因为f后面会跟着对应的打包后的文件名，一般的写法都是-cf之类的。
+tar -cf <dst.tar> <srcDir>
+```
+
+使用tar打包压缩文件
+
+```
+# -z 使用gzip压缩， -v显示打包过程信息
+tar -czvf <dst.tar> <srcDir>
+```
+
+tar解压缩
+
+```
+#-x 解包, -z使用gzip, -C 指定解压路径，请注意这个路径一定要是已存在的目录
+tar -zxvf <dst.tar> -C <existedDir>
+```
+
+> **zip, tar小tips**
+> * zip：
+打包 ：zip something.zip something （目录请加 -r 参数）
+解包：unzip something.zip
+指定路径：-d 参数
+>* tar：
+打包：tar -cf something.tar something
+解包：tar -xf something.tar
+压缩：-z 使用gzip
+指定路径：-C 参数
+
+### 磁盘管理
+
+**dd**
+
+```
+# dd命令用于转换和复制文件，dd在复制时可以处理数据
+
+# 输出到文件test, if=输入, of=输出, bs(block size)块大小，默认为Byte, count块的个数
+dd if=/dev/stdin of=test bs=10 count=1
+# 输出到终端
+dd if=/dev/stdin of=/std/stdout bs=10 count=1
+# 读取输入并且转换为大写然后输出到test文件
+dd if=/dev/stdin of=test bs=10 count=1 conv=ucase
+```
+#### 使用dd命令创建虚拟镜像文件
+```
+# 从 /dev/zero 设备创建一个容量为 256M 的空文件
+dd of=/dev/stdin of=test bs=10 count=1
+# 使用 mkfs 命令格式化磁盘
+sudo mkfs.ext4 virtual.img
+```
+```
+#小练习，找出目录下最大的十个文件或目录
+du -ah |sort -n -r|head -n 10
+```
+
+## 帮助命令
+
+**type**
+可以使用type命令来区分当前命令是内建还是外部，或者是否是别名
+```
+type cd
+type vim
+type ls
 ```
