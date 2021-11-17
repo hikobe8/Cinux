@@ -93,8 +93,22 @@ void swap(int *x, int *y) {
 
 Java中``` >>> ```逻辑右移，``` >> ``` 算术右移
 
-### 整数的表示
 
+### 整数表示
+
+**C语言中的整数类型**
+```
+char / unsigned char 
+short / unsigned short
+int / unsigned int 
+long / unsigned long
+int32_t / uint32_t
+int64_t / uint64_t
+```
+**Java中不支持无符号数**
+
+
+小练习
 ```
 # length = 0 返回值是多少 ?
 int sum(int a[], unsigned length) {
