@@ -69,7 +69,7 @@ source .bashrc(.zprofile)
 . ./.zprofile
 ```
 
-## 文件查找
+### 文件查找
 
 * locate 快而全
   使用 locate 命令查找文件也不会遍历硬盘，它通过查询 /var/lib/mlocate/mlocate.db 数据库来检索信息。不过这个数据库也不是实时更新的，系统会使用定时任务每天自动执行 updatedb 命令来更新数据库。所以有时候你刚添加的文件，它可能会找不到，需要手动执行一次 updatedb 命令（在我们的环境中必须先执行一次该命令）
@@ -201,3 +201,66 @@ type cd
 type vim
 type ls
 ```
+
+## 定时任务
+
+**crontab**
+
+crontab 命令从输入设备读取指令，并将其存放于 crontab 文件中，以供之后读取和执行。通常，crontab 储存的指令被守护进程激活，crond 为其守护进程，crond 常常在后台运行，每一分钟会检查一次是否有预定的作业需要执行。
+
+通过 crontab 命令，我们可以在固定的间隔时间执行指定的系统指令或 shell 脚本。时间间隔的单位可以是分钟、小时、日、月、周的任意组合。
+
+这里我们看一看 crontab 的格式：
+```
+# Example of job definition:
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  * user-name command to be executed
+```
+
+```
+#启动crontab
+sudo cron －f &
+#添加一个任务
+crontab -e
+#查看添加的任务
+crontab -l
+#删除任务
+crontab -r
+```
+### 使用crontab每分钟创建一个文件
+```
+#启动crontab
+sudo cron －f &
+#添加一个任务
+crontab -e
+*/1 * * * * touch /home/shiyanlou/$(date +\%Y\%m\%d\%H\%M\%S)
+```
+
+### 创建系统级定时任务
+
+每个用户使用```crontab -e```添加计划任务，都会在 /var/spool/cron/crontabs 中添加一个该用户自己的任务文档，这样目的是为了隔离。
+如果要创建系统级别的定时任务，需要root权限，编辑/etc/crontab即可。
+**cron 服务监测时间最小单位是分钟，所以 cron 会每分钟去读取一次 /etc/crontab 与 /var/spool/cron/crontabs 里面的內容。**
+
+```ll /etc/ | grep cron```下面的目录解释
+
+1. /etc/cron.daily，目录下的脚本会每天执行一次，在每天的 6 点 25 分时运行；
+1. /etc/cron.hourly，目录下的脚本会每个小时执行一次，在每小时的 17 分钟时运行；
+1. /etc/cron.monthly，目录下的脚本会每月执行一次，在每月 1 号的 6 点 52 分时运行；
+1. /etc/cron.weekly，目录下的脚本会每周执行一次，在每周第七天的 6 点 47 分时运行；
+
+**小练习**
+
+**创建定时任务每天三点备份/var/log/alternatives.log 到 用户目录/tmp/， 备份文件名为年-月-日**
+
+
+```mkdir ~/tmp
+sudo cron -f &
+crontab -e # 添加任务
+0 3 * * * sudo rm /home/shiyanlou/tmp/*
+0 3 * * * sudo cp /var/log/alternatives.log /home/user/tmp/$(date +%Y-%m-%d)```
