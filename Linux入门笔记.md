@@ -258,9 +258,71 @@ crontab -e
 
 **创建定时任务每天三点备份/var/log/alternatives.log 到 用户目录/tmp/， 备份文件名为年-月-日**
 
-
-```mkdir ~/tmp
+```
+mkdir ~/tmp
 sudo cron -f &
 crontab -e # 添加任务
 0 3 * * * sudo rm /home/shiyanlou/tmp/*
-0 3 * * * sudo cp /var/log/alternatives.log /home/user/tmp/$(date +%Y-%m-%d)```
+0 3 * * * sudo cp /var/log/alternatives.log /home/user/tmp/$(date +%Y-%m-%d)
+ ```
+
+## 命令控制顺序
+
+* ; 简单的顺序执行，无论上一个命令的结果如何都会继续进行
+* && 当上一条命令结果为0的时候执行&&之后的命令
+* || 当上一条命令结果不为0的时候执行||之后的命令
+
+**$?获取上一条命令的结果，0或非0**
+
+```
+sudo apt-get update;sudo apt-get install cowsay;cowsay -f head-in hello
+#如果已安装cowsay执行&&后的命令，没有安装则没有输出
+which cowsay>/dev/null && cowsay -f head-in hello
+#如果已安装cowsay执行&&后的命令，没有安装的话输出 not installed
+which cowsay>/dev/null && echo "installed" || echo "not installed"
+```
+
+## 管道
+**上一条命令的输出作为下一条命令的输入**
+cut 命令，打印每一行的某一字段
+
+```
+#打印 /etc/passwd 文件中以 : 为分隔符的第 1 个字段和第 6 个字段分别表示用户名和其家目录
+cut /etc/passwd -d ':' -f 1,6
+```
+
+**wc 命令用于统计并输出一个文件中行、单词和字节的数目，比如输出**
+
+```
+# 行数
+wc -l /etc/passwd
+# 单词数
+wc -w /etc/passwd
+# 字节数
+wc -c /etc/passwd
+# 字符数
+wc -m /etc/passwd
+# 最长行字节数
+wc -L /etc/passwd
+```
+
+**sort 排序命令**
+
+```
+# 默认为字典排序：
+cat /etc/passwd | sort
+
+# 反转排序：
+cat /etc/passwd | sort -r
+
+# 按特定字段排序：
+cat /etc/passwd | sort -t':' -k 3
+
+# 按特定字段，数字排序
+cat /etc/passwd | sort -t':' -k 3 -n
+```
+**history 命令查看最近执行过的命令（实际为读取 ${SHELL}_history 文件，.zsh_history 文件）**
+
+```
+history
+```
