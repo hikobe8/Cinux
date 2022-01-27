@@ -145,7 +145,8 @@ NOTES:
 int bitXor(int x, int y) {
   //x^y =
   //     ~(x&y)&(x|y)
-  return ~(x&y)&~(~x&~y);
+  // return ~(x&y)&~(~x&~y);
+  return ~(~(x&~y)&~(~x&y));
 }
 /* 
  * tmin - return minimum two's complement integer 
@@ -185,7 +186,9 @@ int isTmax(int x) {
  *   Rating: 2
  */
 int allOddBits(int x) {
-  return 2;
+  int even = 2863311530; //0xaaaaaaaa
+  int i = x|even;
+  return !(x^i);
 }
 /* 
  * negate - return -x 
